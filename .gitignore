@@ -1,0 +1,9 @@
+!/.gitignore
+
+.git
+*.swp
+*~
+/composer.lock
+/composer.phar
+/vendor
+/db

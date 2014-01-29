@@ -1,0 +1,9 @@
+Options All -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+
+    RewriteCond %{REQUEST_URI} !^/static
+    RewriteCond %{REQUEST_URI} !^/adminer.php
+    RewriteRule .? app.php [L]
+</IfModule>

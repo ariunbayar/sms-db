@@ -1,0 +1,5 @@
+#!/bin/sh
+curl "http://localhost:12345/2" -v \
+    -d '{"title":"Hello World!","body":"This is my first post!"}' \
+    -H 'Content-Type: application/json' \
+    -H 'Api-Key: 123'

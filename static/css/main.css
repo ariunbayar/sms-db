@@ -1,0 +1,13 @@
+/* Probably only for admin purposes */
+*{ margin: 0; padding: 0; }
+
+body{
+    font-family: Arial;
+    font-size: 24px;
+    text-shadow: 2px 1px 0px rgba(0,0,0,.2);
+    color: #666;
+}
+
+div{
+    border: 1px solid rgba(255, 0, 0, .2);
+}
