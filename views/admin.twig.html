@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html ng-app="sms">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="/static/css/main.css" type="text/css" />
+    <title>Admin</title>
+</head>
+<body>
+    <div class="wrapper" ng-controller="MainController">
+        <div> (( message )) </div>
+        <h1>Users</h1>
+        <div class="span3">
+            <ul>
+                <li ng-repeat="user in users"
+                    ng-click="edit(user)"
+                    ng-class="{active: user.id == edit_user.id}">
+                    (( user.id )). (( user.name ))
+                </li>
+                <li><input type="button" value="New" ng-click="reset_form()"/></li>
+            </ul>
+        </div>
+        <div class="span7">
+            <label>ID: (( edit_user.id ))</label>
+            <label>Name: <input type="text" ng-model="edit_user.name"/></label>
+            <label>API Key: <input type="text" ng-model="edit_user.token"/></label>
+            <label>Roles:
+                <select ng-model="edit_user.roles" multiple="multiple">
+                    <option value="admin">admin</option>
+                    <option value="api">api</option>
+                </select>
+            </label>
+            <label>Change Password: <input type="text" ng-model="edit_user.password"/></label>
+            <label>Phone: <input type="text" ng-model="edit_user.phone"/></label>
+            <label>Created: (( edit_user.created_at ))</label>
+            <input type="button" value="Save" ng-click="save(edit_user)"/>
+            <input type="button" ng-if="edit_user.id" value="Delete" ng-click="remove(edit_user)"/>
+        </div>
+
+        <h1>SMS</h1>
+        <table>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </table>
+    </div>
+    <script type="text/javascript" src="/static/js/angular.min.js"></script>
+    <script type="text/javascript" src="/static/js/angular-resource.min.js"></script>
+    <script type="text/javascript" src="/static/js/main.js"></script>
+</body>
+</html>

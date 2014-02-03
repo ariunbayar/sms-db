@@ -15,29 +15,39 @@ $app['debug'] = true;
 ErrorHandler::register($app['debug']);
 ExceptionHandler::register($app['debug']);
 
-$app->register(new Silex\Provider\DoctrineServiceProvider(), array(  // {{{1
+// Register database library, doctrine {{{1
+$app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
         'driver'   => 'pdo_sqlite',
         'path'     => __DIR__.'/db/app.db',
     ),
 ));
-// $app['db'] - instance of Doctrine\DBAL\Connection
 
-$app->before(function (Request $request) use ($app) {  // {{{1
-    $is_json = 0 === strpos($request->headers->get('Content-Type'), 'application/json');
-    $api_key = trim($request->headers->get('Api-Key'));
-    if ($is_json && $api_key) {  // {{{2
-        // Validates the api key
-        $user = $app['db']->fetchAssoc("SELECT * FROM user WHERE token=?", [$api_key]);  // TODO rename the field to api_key
-        if (empty($user)) throw new Exception('invalid api_key: '.$api_key);
-        // Replaces request data with json data
-        $data = json_decode($request->getContent(), true);
-        $request->request->replace(is_array($data) ? $data : array());
-    }  // }}}
-});
+// Register security service provider {{{1
+$app->register(new Silex\Provider\SecurityServiceProvider(), array(
+    'security.firewalls' => [
+        'admin' => array(  // TODO block non-admin users via user.roles
+            'pattern' => '^/admin',
+            'http' => true,
+            'users' => $app->share(function () use ($app) {
+                return new Library\UserProvider($app['db'], $app);
+            }),
+        ),
+    ],
+));
+
+// Register templating engine, twig {{{1
+$app->register(new Silex\Provider\TwigServiceProvider(), array(
+    'twig.path' => __DIR__.'/views',
+));
+
+// Constants {{{1
+const STATUS_SENDING = 0;
+const STATUS_SENT = 1;
+const STATUS_RECIEVED = 2;
 
 require __DIR__.'/controllers.php';  // {{{1
 $app->run();
 
 
-// vim: fdm=marker
+// vim: fdm=marker tw=120

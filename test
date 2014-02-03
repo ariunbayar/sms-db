@@ -1,5 +1,24 @@
 #!/bin/sh
-curl "http://localhost:12345/2" -v \
-    -d '{"title":"Hello World!","body":"This is my first post!"}' \
+
+# Send new sms to 88110001
+echo '--- Sending sms ---';
+curl "http://localhost:12345/send/" \
+    -d '{"phone":"88110001","body":"Hello World"}' \
     -H 'Content-Type: application/json' \
-    -H 'Api-Key: 123'
+    -H 'Api-Key: 444'
+echo
+
+# Send pending sms. Admin purposes only
+echo '--- [Device] Send sms ---';
+curl "http://localhost:12345/pending/1" \
+    -d '{"phone":"88110001","body":"Hello World"}' \
+    -H 'Content-Type: application/json' \
+    -H 'Api-Key: 444'
+echo
+
+# List existing messages with date filter
+echo '--- Listing recieved sms ---';
+curl "http://localhost:12345/list_recieved/?date_from=2014-01-30%2012:09&date_to=2014-01-30%2012:09" \
+    -H 'Content-Type: application/json' \
+    -H 'Api-Key: 444'
+echo

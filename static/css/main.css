@@ -1,13 +1,25 @@
 /* Probably only for admin purposes */
 *{ margin: 0; padding: 0; }
 
-body{
+body, input{
     font-family: Arial;
-    font-size: 24px;
-    text-shadow: 2px 1px 0px rgba(0,0,0,.2);
+    font-size: 18px;
+    text-shadow: 1px 1px 0px rgba(0,0,0,.2);
     color: #666;
 }
 
-div{
-    border: 1px solid rgba(255, 0, 0, .2);
-}
+div{ border: 1px solid rgba(255, 0, 0, .2); }
+.wrapper{ margin: 0 auto; width: 800px; }
+ul{ margin-left: 1.5em; }
+
+
+[class*='span']{ display: inline-block; vertical-align: top; }
+.span3{ width: 29%; }
+.span7{ width: 69%; }
+
+label{ display: block; }
+label input, label select{ display: block; }
+
+.active{ background-color: rgba(0,0,0,.07); }
+
+/* vim: fdm=marker */
