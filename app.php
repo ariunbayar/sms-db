@@ -26,13 +26,16 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 // Register security service provider {{{1
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls' => [
-        'admin' => array(  // TODO block non-admin users via user.roles
+        'admin' => array(
             'pattern' => '^/admin',
             'http' => true,
             'users' => $app->share(function () use ($app) {
                 return new Library\UserProvider($app['db'], $app);
             }),
         ),
+    ],
+    'security.access_rules' => [
+        ['^/admin', 'ROLE_ADMIN'],
     ],
 ));
 

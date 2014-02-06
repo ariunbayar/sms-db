@@ -22,11 +22,15 @@ function fetch($query, $params) {
     return $app['db']->executeQuery($query, $params)->fetch(PDO::FETCH_OBJ);
 }
 
-function encode_password($raw_password){
+function get_user(){
     global $app;
     $token = $app['security']->getToken();
     if (null === $token) throw new Exception('user not found');
-    $user = $token->getUser();
+    return $token->getUser();
+}
+
+function encode_password($raw_password){
+    $user = get_user($app);
     $encoder = $app['security.encoder_factory']->getEncoder($user);
     return $encoder->encodePassword($raw_password, $user->getSalt());
 }
@@ -38,6 +42,7 @@ $validate_api = function (Request $request) use ($app) {
     if ($api_key) {
         // Validates the api key
         $user = fetch("SELECT * FROM user WHERE token=?", [$api_key]);  // TODO rename the field to api_key
+        $user->roles = explode(',', $user->roles);
         if (empty($user)) throw new Exception('invalid api_key: '.$api_key);
         $app['current_user'] = $user;
         return;
@@ -53,6 +58,15 @@ $json_as_post_params = function(Request $request) use ($app){
         $request->request->replace(is_array($data) ? $data : array());
     }
 };
+
+function requires_role($role){
+    global $app;
+    return function (Request $request) use ($app, $role) {
+        if (!in_array($role, $app['current_user']->roles)) {
+            throw new Exception('permission denied');
+        }
+    };
+}
 
 
 // Frontend pages
@@ -119,7 +133,6 @@ $app->post('/send/', function(Request $r) use($app) {
      * * body  - Message body, up to 250 chars
      * * phone - Phone number, 8 chars
      */
-    // TODO check roles api users
     $cur_user = $app['current_user'];
     $body_is_valid = preg_match('/^[A-z_-\d\s]{1,250}$/', $r->request->get('body'), $body);
     $phone_is_valid = preg_match('/^[\d]{8}$/', $r->request->get('phone'), $phone);
@@ -146,7 +159,7 @@ $app->post('/send/', function(Request $r) use($app) {
         $rval['errors'] = &$errors;
         return $app->json($rval, 400);
     }
-})->before($validate_api)->before(requires_role('api'));
+})->before($validate_api)->before(requires_role('ROLE_API'));
 
 $app->get('/list_received/', function(Request $r) use($app) {
     /**
@@ -154,7 +167,6 @@ $app->get('/list_received/', function(Request $r) use($app) {
      * * date_from - Date from in YYYY-MM-DD HH:MM:SS format.
      * * date_to   - Date to in YYYY-MM-DD HH:MM:SS format.
      */
-    // TODO check roles for api users
     $filters = 'user_id=? AND status=?';
     $values = [$app['current_user']->id, STATUS_RECIEVED];
 
@@ -171,7 +183,7 @@ $app->get('/list_received/', function(Request $r) use($app) {
         sms2display($sms);
     }
     return $app->json($sms_list, 200);
-})->before($validate_api);
+})->before($validate_api)->before(requires_role('ROLE_API'));
 
 // API functions for system
 $app->get('/pending/', function (Request $r) use($app) {
@@ -179,19 +191,17 @@ $app->get('/pending/', function (Request $r) use($app) {
      * Get next sms to send by supplying following parameter as querystring:
      * * last_id - Last sms id, so that it knows the next sms
      */
-    // TODO check roles for system
     $last_id = (int)$r->query->get('last_id', 0);
     $next_id = $app['db']->fetchColumn('SELECT id FROM sms WHERE status=? AND id>?',
                                        [STATUS_SENDING, $last_id], 0);
     return $app->json(['next_id' => $next_id], 200);
-})->before($validate_api);
+})->before($validate_api)->before(requires_role('ROLE_SYSTEM'));
 
 $app->post('/sent/', function (Request $r) use($app) {
     /**
      * Notify that sms has been sent. Requires following as json:
      * * id - SMS id that has been sent
      */
-    // TODO check roles for system
     $id = (int)$r->request->get('id');
     $sms = fetch('SELECT * FROM sms WHERE id=? AND status=?', [$id, STATUS_SENDING]);
     if ($sms) {
@@ -204,7 +214,7 @@ $app->post('/sent/', function (Request $r) use($app) {
         return $app->json($rsp, 400);
     }
     $rsp = [];
-})->before($validate_api);
+})->before($validate_api)->before(requires_role('ROLE_SYSTEM'));
 
 $app->post('/sms_recieved/', function (Request $r) use($app) {
     /**
@@ -212,7 +222,6 @@ $app->post('/sms_recieved/', function (Request $r) use($app) {
      * * body  - Message body
      * * phone - Phone number
      */
-    // TODO check roles for system
     $sms = ['phone' => $r->request->get('phone'),
             'body' => $r->request->get('body'),
             'user_id' => $app['current_user']->id,
@@ -222,7 +231,7 @@ $app->post('/sms_recieved/', function (Request $r) use($app) {
     $sms['id'] = $app['db']->lastInsertId();
     sms2display($sms);
     return $app->json($sms, 201);
-})->before($validate_api);
+})->before($validate_api)->before(requires_role('ROLE_SYSTEM'));
 
 
 // vim: set fdm=marker tw=120 fmr={,} :
