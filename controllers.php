@@ -22,14 +22,14 @@ function fetch($query, $params) {
     return $app['db']->executeQuery($query, $params)->fetch(PDO::FETCH_OBJ);
 }
 
-function get_user(){
-    global $app;
+function get_user($app){
     $token = $app['security']->getToken();
     if (null === $token) throw new Exception('user not found');
     return $token->getUser();
 }
 
 function encode_password($raw_password){
+    global $app;
     $user = get_user($app);
     $encoder = $app['security.encoder_factory']->getEncoder($user);
     return $encoder->encodePassword($raw_password, $user->getSalt());
