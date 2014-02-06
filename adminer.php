@@ -1,4 +1,5 @@
 <?php
+@$_SERVER['REMOTE_ADDR'] == '127.0.0.1' or die('error 403');
 /** Adminer - Compact database management
 * @link http://www.adminer.org/
 * @author Jakub Vrana, http://www.vrana.cz/

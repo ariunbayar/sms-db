@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 $app = new Silex\Application();  // {{{1
-$app['debug'] = true;
+$app['debug'] = @$_SERVER['REMOTE_ADDR'] == '127.0.0.1';
 ErrorHandler::register($app['debug']);
 ExceptionHandler::register($app['debug']);
 
