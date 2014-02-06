@@ -1,10 +1,30 @@
 /* Probably only for admin purposes */
 *{ margin: 0; padding: 0; }
 
-body, input{
-    font-family: Arial;
-    font-size: 18px;
-    text-shadow: 1px 1px 0px rgba(0,0,0,.2);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700|Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic&subset=latin,cyrillic-ext,greek-ext,greek,vietnamese,latin-ext,cyrillic);
+
+body, input, select{
+    font-family: Roboto;
+    font-weight: 300;
+    color: #333;
+}
+
+body{
+    text-shadow: 1px 1px 1px rgba(0,0,0,.15);
+}
+
+b, strong, th { font-weight: 400; }
+
+code {
+    border: 1px solid rgba(255,0,0,0.2);
+    border-radius: 3px;
+    text-shadow: none;
+}
+
+h1{
+    border-left: 7px solid;
+    padding-left: 10px;
+    text-shadow: 1px 1px 0 #fff, 2px 2px 0 rgba(0,0,0,.15);
     color: #666;
 }
 
@@ -12,14 +32,21 @@ div{ border: 1px solid rgba(255, 0, 0, .2); }
 .wrapper{ margin: 0 auto; width: 800px; }
 ul{ margin-left: 1.5em; }
 
-
+/* Layout {*/
 [class*='span']{ display: inline-block; vertical-align: top; }
 .span3{ width: 29%; }
 .span7{ width: 69%; }
+/* } */
 
+/* Form {*/
 label{ display: block; }
-label input, label select{ display: block; }
+label input,
+label select,
+label textarea{ display: block; }
+/* } */
 
 .active{ background-color: rgba(0,0,0,.07); }
 
-/* vim: fdm=marker */
+tr:hover { background-color: rgba(0,0,0,.07); }
+
+/* vim: set fdm=marker fmr={,} : */
