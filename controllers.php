@@ -194,8 +194,13 @@ $app->get('/pending/', function (Request $r) use($app) {
     $last_id = (int)$r->query->get('last_id', 0);
     $sql = 'SELECT * FROM sms WHERE id>? AND status=? ORDER BY created_at ASC, id ASC';
     $sms = $app['db']->fetchAssoc($sql, [$last_id, STATUS_SENDING]);
-    sms2display($sms);
-    return $app->json($sms, 200);
+    if ($sms) {
+        sms2display($sms);
+        return $app->json($sms, 200);
+    }else{
+        $rsp = ['id' => $id, 'errors' => ['id' => 'No pending SMS']];
+        return $app->json($rsp, 200);
+    }
 })->before($validate_api)->before(requires_role('ROLE_SYSTEM'));
 
 $app->post('/sent/', function (Request $r) use($app) {
