@@ -216,9 +216,9 @@ $app->post('/sent/', function (Request $r) use($app) {
     $rsp = [];
 })->before($validate_api)->before(requires_role('ROLE_SYSTEM'));
 
-$app->post('/sms_recieved/', function (Request $r) use($app) {
+$app->post('/sms_received/', function (Request $r) use($app) {
     /**
-     * Notify about recieved sms. Required following json params:
+     * Notify about received sms. Requires following json params:
      * * body  - Message body
      * * phone - Phone number
      */

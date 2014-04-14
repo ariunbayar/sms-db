@@ -17,8 +17,8 @@ curl "http://localhost:12345/pending/1" \
 echo
 
 # List existing messages with date filter
-echo '--- Listing recieved sms ---';
-curl "http://localhost:12345/list_recieved/?date_from=2014-01-30%2012:09&date_to=2014-01-30%2012:09" \
+echo '--- Listing received sms ---';
+curl "http://localhost:12345/list_received/?date_from=2014-01-30%2012:09&date_to=2014-01-30%2012:09" \
     -H 'Content-Type: application/json' \
     -H 'Api-Key: 444'
 echo

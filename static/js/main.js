@@ -67,7 +67,7 @@ angular.module('sms', ['ngResource'])
         }else if ($scope.demo_values.url == '/sent/') {
             config.method = 'POST';
             config.data = {id: $scope.demo_values.id};
-        }else if ($scope.demo_values.url == '/sms_recieved/') {
+        }else if ($scope.demo_values.url == '/sms_received/') {
             config.method = 'POST';
             config.data = {body: $scope.demo_values.body,
                            phone: $scope.demo_values.phone};

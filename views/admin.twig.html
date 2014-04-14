@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="/static/css/main.css" type="text/css" />
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800|Roboto+Slab:400,100,300,700|Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic&subset=latin,cyrillic-ext,greek-ext,greek,vietnamese,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800|Roboto+Slab:400,100,300,700|Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic&subset=latin,cyrillic-ext,greek-ext,greek,vietnamese,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
     <title>Admin</title>
 </head>
 <body>
@@ -46,7 +46,7 @@
         </div>
 
         <h1 id="sms-api">SMS API</h1>
-        Here is how you send, recieve sms via api interface.
+        Here is how you send, receive sms via api interface.
         <table>
         <tr>
             <td><code>/send/</code></td>
@@ -91,15 +91,15 @@
             <td><input type="button" value="Test" ng-click="test_api('/sent/')"/></td>
         </tr>
         <tr>
-            <td><code>/sms_recieved/</code></td>
+            <td><code>/sms_received/</code></td>
             <td>
-                Notify about recieved sms. Required following json params:
+                Notify about received sms. Required following json params:
                 <ul>
                     <li><b>body</b>: Message body.</li>
                     <li><b>phone</b>: Phone number.</li>
                 </ul>
             </td>
-            <td><input type="button" value="Test" ng-click="test_api('/sms_recieved/')"/></td>
+            <td><input type="button" value="Test" ng-click="test_api('/sms_received/')"/></td>
         </tr>
         </table>
 
@@ -119,10 +119,10 @@
                 <label ng-if="demo_values.url == '/list_received/'">
                     Date To: <input type="text" ng-model="demo_values.date_to"/>
                 </label>
-                <label ng-if="demo_values.url == '/send/' || demo_values.url == '/sms_recieved/'">
+                <label ng-if="demo_values.url == '/send/' || demo_values.url == '/sms_received/'">
                     Body: <textarea type="text" ng-model="demo_values.body"></textarea>
                 </label>
-                <label ng-if="demo_values.url == '/send/' || demo_values.url == '/sms_recieved/'">
+                <label ng-if="demo_values.url == '/send/' || demo_values.url == '/sms_received/'">
                     Phone: <input type="text" ng-model="demo_values.phone"/>
                 </label>
                 <input type="button" value="Test this request" ng-click="test_request()"/>
@@ -150,10 +150,6 @@
             <td>(( sms.created_at ))</td>
         </tr>
         </table>
-        <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
-        <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
-        <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
-        <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
 
         <div style="background-color: #333; text-align: center; color: #ccc; ">
             Developed by Ariunbayar, United Web LLC
