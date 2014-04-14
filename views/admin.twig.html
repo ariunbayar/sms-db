@@ -34,7 +34,7 @@
             <label>Roles:
                 <select ng-model="edit_user.roles" multiple="multiple">
                     <option value="ROLE_ADMIN">admin</option>
-                    <option value="ROLE_API">api</option>
+                    <option value="ROLE_API">app</option>
                     <option value="ROLE_SYSTEM">system</option>
                 </select>
             </label>
@@ -57,6 +57,7 @@
                     <li> <b>phone</b>: Phone number, 8 chars </li>
                 </ul>
             </td>
+            <td>app</td>
             <td><input type="button" value="Test" ng-click="test_api('/send/')"/></td>
         </tr>
         <tr>
@@ -68,6 +69,7 @@
                     <li><b>date_to</b>: Date to in YYYY-MM-DD HH:MM:SS format.  </li>
                 </ul>
             </td>
+            <td>app</td>
             <td><input type="button" value="Test" ng-click="test_api('/list_received/')"/></td>
         </tr>
         <tr>
@@ -78,6 +80,7 @@
                     <li><b>last_id</b>: Last sms id, so that it knows the next sms </li>
                 </ul>
             </td>
+            <td>system</td>
             <td><input type="button" value="Test" ng-click="test_api('/pending/')"/></td>
         </tr>
         <tr>
@@ -88,6 +91,7 @@
                     <li><b>id</b>: SMS id that has been sent.</li>
                 </ul>
             </td>
+            <td>system</td>
             <td><input type="button" value="Test" ng-click="test_api('/sent/')"/></td>
         </tr>
         <tr>
@@ -99,6 +103,7 @@
                     <li><b>phone</b>: Phone number.</li>
                 </ul>
             </td>
+            <td>system</td>
             <td><input type="button" value="Test" ng-click="test_api('/sms_received/')"/></td>
         </tr>
         </table>

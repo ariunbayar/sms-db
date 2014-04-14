@@ -192,9 +192,10 @@ $app->get('/pending/', function (Request $r) use($app) {
      * * last_id - Last sms id, so that it knows the next sms
      */
     $last_id = (int)$r->query->get('last_id', 0);
-    $next_id = $app['db']->fetchColumn('SELECT id FROM sms WHERE status=? AND id>?',
-                                       [STATUS_SENDING, $last_id], 0);
-    return $app->json(['next_id' => $next_id], 200);
+    $sql = 'SELECT * FROM sms WHERE id>? AND status=? ORDER BY created_at ASC, id ASC';
+    $sms = $app['db']->fetchAssoc($sql, [$last_id, STATUS_SENDING]);
+    sms2display($sms);
+    return $app->json($sms, 200);
 })->before($validate_api)->before(requires_role('ROLE_SYSTEM'));
 
 $app->post('/sent/', function (Request $r) use($app) {
