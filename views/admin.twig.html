@@ -89,6 +89,7 @@
                 Notify that sms has been sent. Requires following as json:
                 <ul>
                     <li><b>id</b>: SMS id that has been sent.</li>
+                    <li><b>sent</b>: 1 if sent, 0 if failed.</li>
                 </ul>
             </td>
             <td>system</td>
@@ -97,7 +98,7 @@
         <tr>
             <td><code>/sms_received/</code></td>
             <td>
-                Notify about received sms. Required following json params:
+                Notify about received sms. Requires following json params:
                 <ul>
                     <li><b>body</b>: Message body.</li>
                     <li><b>phone</b>: Phone number.</li>
@@ -117,6 +118,9 @@
                 </label>
                 <label ng-if="demo_values.url == '/sent/'">
                     SMS ID: <input type="text" ng-model="demo_values.id"/>
+                </label>
+                <label ng-if="demo_values.url == '/sent/'">
+                    Sent/Failed (0, 1): <input type="text" ng-model="demo_values.sent"/>
                 </label>
                 <label ng-if="demo_values.url == '/list_received/'">
                     Date From: <input type="text" ng-model="demo_values.date_from"/>

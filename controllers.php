@@ -5,7 +5,8 @@ use Symfony\Component\HttpFoundation\Request;
 function sms2display(&$sms){
     $status_codes = [STATUS_SENDING => 'sending',
                      STATUS_SENT => 'sent',
-                     STATUS_RECIEVED => 'received'];
+                     STATUS_RECIEVED => 'received',
+                     STATUS_SEND_FAIL => 'send failed'];
     $sms['status'] = $status_codes[$sms['status']];
     $sms['created_at'] = date('Y-m-d H:i:s', $sms['created_at']);
     unset($sms['user_id']);
@@ -198,20 +199,22 @@ $app->get('/pending/', function (Request $r) use($app) {
         sms2display($sms);
         return $app->json($sms, 200);
     }else{
-        $rsp = ['id' => $id, 'errors' => ['id' => 'No pending SMS']];
+        $rsp = ['id' => $last_id, 'errors' => ['id' => 'No pending SMS']];
         return $app->json($rsp, 200);
     }
 })->before($validate_api)->before(requires_role('ROLE_SYSTEM'));
 
 $app->post('/sent/', function (Request $r) use($app) {
     /**
-     * Notify that sms has been sent. Requires following as json:
+     * Notify that pending sms has been processed. Requires following as json:
      * * id - SMS id that has been sent
+     * * sent - 1 if sent, 0 if failed.
      */
     $id = (int)$r->request->get('id');
     $sms = fetch('SELECT * FROM sms WHERE id=? AND status=?', [$id, STATUS_SENDING]);
     if ($sms) {
-        $app['db']->update('sms', ['status' => STATUS_SENT], ['id' => $sms->id]);
+        $status = ($r->request->get('sent') == 1 ? STATUS_SENT : STATUS_SEND_FAIL);
+        $app['db']->update('sms', ['status' => $status], ['id' => $sms->id]);
         $sms = $app['db']->fetchAssoc('SELECT * FROM sms WHERE id=?', [$sms->id]);
         sms2display($sms);
         return $app->json($sms, 200);

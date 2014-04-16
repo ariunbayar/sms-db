@@ -48,6 +48,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 const STATUS_SENDING = 0;
 const STATUS_SENT = 1;
 const STATUS_RECIEVED = 2;
+const STATUS_SEND_FAIL = 3;
 
 require __DIR__.'/controllers.php';  // {{{1
 $app->run();
