@@ -153,7 +153,9 @@
             <th>Phone</th>
             <th width="20%">Body</th>
             <th>Status</th>
-            <th>Date</th>
+            <th>Date
+                <a href="javascript:void(0);" ng-click="reload_sms_list()" style="float: right;">Refresh</a>
+            </th>
         </tr>
         <tr ng-repeat="sms in sms_list">
             <td>(( sms.id ))</td>

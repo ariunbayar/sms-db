@@ -7,14 +7,14 @@ angular.module('sms', ['ngResource'])
 })
 
 .factory('User', function($resource){
-    return $resource('/admin/:action/', {}, {
+    return $resource('/admin/:action\\/', {}, {
         list: {method: 'GET',  params: {action: 'user_list'}, isArray: true},
         remove: {method: 'DELETE', params: {action: 'user_delete'}, isArray: false}
     });
 })
 
 .factory('SMS', function($resource){
-    return $resource('/admin/:action/', {}, {
+    return $resource('/admin/:action\\/', {}, {
         list: {method: 'GET',  params: {action: 'sms_list'}, isArray: true},
     });
 })
@@ -28,8 +28,10 @@ angular.module('sms', ['ngResource'])
         phone: '12345678',
         created_at: '2014-04-19T14:06:14+08:00',
     };
-    $scope.sms_list = SMS.list();
 
+    $scope.reload_sms_list = function(e){
+        SMS.list({}, function(data){ $scope.sms_list = data; });
+    };
     $scope.edit = function(u){ $scope.edit_user = angular.copy(u); }
     $scope.reset_form = function(){ $scope.edit_user = {}; }
     $scope.save = function(u){
@@ -85,6 +87,7 @@ angular.module('sms', ['ngResource'])
             $scope.demo_output = rsp;
         });
     }
+    $scope.reload_sms_list();
 })
 
 ;
