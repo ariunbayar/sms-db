@@ -8,7 +8,7 @@ function sms2display(&$sms){
                      STATUS_RECIEVED => 'received',
                      STATUS_SEND_FAIL => 'send failed'];
     $sms['status'] = $status_codes[$sms['status']];
-    $sms['created_at'] = date('Y-m-d H:i:s', $sms['created_at']);
+    $sms['created_at'] = date('c', $sms['created_at']);
     unset($sms['user_id']);
 }
 
