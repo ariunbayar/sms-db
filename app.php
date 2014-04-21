@@ -1,4 +1,5 @@
 <?php
+ini_set('date.timezone', 'Asia/Ulaanbaatar');
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
