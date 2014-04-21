@@ -168,6 +168,7 @@ $app->get('/list_received/', function(Request $r) use($app) {
      * * date_from - Date from in YYYY-MM-DD HH:MM:SS format.
      * * date_to   - Date to in YYYY-MM-DD HH:MM:SS format.
      */
+    // TODO probably a good idea to include timezone in date_from, date_to params
     $filters = 'user_id=? AND status=?';
     $values = [$app['current_user']->id, STATUS_RECIEVED];
 
@@ -230,12 +231,13 @@ $app->post('/sms_received/', function (Request $r) use($app) {
      * Notify about received sms. Requires following json params:
      * * body  - Message body
      * * phone - Phone number
+     * * created_at - When sms was originally received at
      */
     $sms = ['phone' => $r->request->get('phone'),
             'body' => $r->request->get('body'),
             'user_id' => $app['current_user']->id,
             'status' => STATUS_RECIEVED,
-            'created_at' => time()];
+            'created_at' => strtotime($r->request->get('created_at'))];
     $app['db']->insert('sms', $sms);
     $sms['id'] = $app['db']->lastInsertId();
     sms2display($sms);

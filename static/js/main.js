@@ -26,6 +26,7 @@ angular.module('sms', ['ngResource'])
     $scope.demo_values = {
         api_key: '1234567890',
         phone: '12345678',
+        created_at: '2014-04-19T14:06:14+08:00',
     };
     $scope.sms_list = SMS.list();
 
@@ -71,7 +72,8 @@ angular.module('sms', ['ngResource'])
         }else if ($scope.demo_values.url == '/sms_received/') {
             config.method = 'POST';
             config.data = {body: $scope.demo_values.body,
-                           phone: $scope.demo_values.phone};
+                           phone: $scope.demo_values.phone,
+                           created_at: $scope.demo_values.created_at};
         }else{
             return;
         }

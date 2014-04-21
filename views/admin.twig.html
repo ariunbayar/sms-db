@@ -102,6 +102,7 @@
                 <ul>
                     <li><b>body</b>: Message body.</li>
                     <li><b>phone</b>: Phone number.</li>
+                    <li><b>created_at</b>: When sms was originally received at.</li>
                 </ul>
             </td>
             <td>system</td>
@@ -133,6 +134,9 @@
                 </label>
                 <label ng-if="demo_values.url == '/send/' || demo_values.url == '/sms_received/'">
                     Phone: <input type="text" ng-model="demo_values.phone"/>
+                </label>
+                <label ng-if="demo_values.url == '/sms_received/'">
+                    Created at: <input type="text" ng-model="demo_values.created_at"/>
                 </label>
                 <input type="button" value="Test this request" ng-click="test_request()"/>
             </div>
